@@ -29,9 +29,6 @@ export function ChapterPage() {
 
       <header className="mt-2 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{chapter.title}</h1>
-        {chapter.reading && (
-          <p className="mt-1 text-xs text-slate-400">{chapter.reading}</p>
-        )}
         <p className="mt-3 text-slate-600 dark:text-slate-300">{chapter.summary}</p>
         <div className="mt-3 flex items-center gap-3 text-xs text-slate-500">
           <span>⏱ 約 {chapter.estMinutes} 分</span>
@@ -49,10 +46,7 @@ export function ChapterPage() {
           <dl className="space-y-3">
             {chapter.terms.map((t) => (
               <div key={t.term} className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/40 p-3">
-                <dt className="font-bold">
-                  {t.term}
-                  {t.reading && <span className="ml-2 text-xs font-normal text-slate-400">{t.reading}</span>}
-                </dt>
+                <dt className="font-bold">{t.term}</dt>
                 <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.definition}</dd>
               </div>
             ))}

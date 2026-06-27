@@ -7,9 +7,19 @@ import { chaptersD } from './chapters/groupD'
 import { chaptersE } from './chapters/groupE'
 import { chaptersF } from './chapters/groupF'
 import { chaptersG } from './chapters/groupG'
+import { chaptersH } from './chapters/groupH'
+import { chaptersI } from './chapters/groupI'
+import { chaptersJ } from './chapters/groupJ'
+import { chaptersK } from './chapters/groupK'
+import { chaptersL } from './chapters/groupL'
+import { chaptersM } from './chapters/groupM'
+import { chaptersN } from './chapters/groupN'
+import { chaptersO } from './chapters/groupO'
+import { chaptersP } from './chapters/groupP'
+import { chaptersQ } from './chapters/groupQ'
 import { EXTRA_TERMS } from './glossaryExtra'
 
-/** 全章（章立て順） */
+/** 全章（章立て順）。表示・前後ナビは GROUPS の並びに対応させる。 */
 export const CHAPTERS: Chapter[] = [
   ...chaptersA,
   ...chaptersB,
@@ -17,6 +27,16 @@ export const CHAPTERS: Chapter[] = [
   ...chaptersD,
   ...chaptersE,
   ...chaptersF,
+  ...chaptersH,
+  ...chaptersI,
+  ...chaptersJ,
+  ...chaptersK,
+  ...chaptersL,
+  ...chaptersM,
+  ...chaptersN,
+  ...chaptersO,
+  ...chaptersP,
+  ...chaptersQ,
   ...chaptersG,
 ]
 
@@ -70,9 +90,7 @@ export const ALL_TERMS: IndexedTerm[] = (() => {
     seen.add(t.term)
     out.push(t)
   }
-  return out.sort((a, b) =>
-    (a.reading ?? a.term).localeCompare(b.reading ?? b.term, 'ja'),
-  )
+  return out.sort((a, b) => a.term.localeCompare(b.term, 'ja'))
 })()
 
 export const totalChapters = CHAPTERS.length

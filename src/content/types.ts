@@ -19,8 +19,6 @@ export interface QuizQuestion {
 /** 用語集の 1 項目 */
 export interface Term {
   term: string
-  /** ふりがな（未経験者向け） */
-  reading?: string
   definition: string
 }
 
@@ -45,8 +43,6 @@ export interface Chapter {
   /** 所属グループ ID（A〜G） */
   groupId: string
   title: string
-  /** タイトルのふりがな（任意） */
-  reading?: string
   /** 一覧・検索で使う 1〜2 文の要約 */
   summary: string
   /** 推定学習時間（分） */

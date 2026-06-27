@@ -16,6 +16,10 @@ const PHASES: Phase[] = [
   { period: '2ヶ月目', title: '工事管理の実務（QCDSE）', goal: '品質・原価・工程・安全・環境の管理の流れを掴む', groupIds: ['C'] },
   { period: '2〜3ヶ月目', title: '書類・施工体制（ディレクター中核）', goal: '施工体制台帳・写真・電子納品など、自分の主担当業務を習得', groupIds: ['D'] },
   { period: '3ヶ月目以降', title: '制度と最新動向', goal: '建退共・CCUS・2024年問題・改正建設業法まで視野を広げる', groupIds: ['E', 'F'] },
+  { period: '実務①（現場の数値とお金）', title: '測量・出来形・品質・積算', goal: '丁張り・出来形管理・品質試験と、積算・数量・原価の実務を身につける', groupIds: ['H', 'I'] },
+  { period: '実務②（図面と書類）', title: 'CAD・ICT・契約書類', goal: 'CAD/CIM・ICT施工・電子納品と、標準請負約款・施工計画書・検査の書類実務を習得', groupIds: ['J', 'K'] },
+  { period: '実務③（施工技術・工種）', title: '共通施工技術と工種別の施工', goal: '土工・基礎・コンクリート・仮設と、道路/河川/橋梁・トンネル等の工種別施工を深める', groupIds: ['L', 'M', 'N', 'O'] },
+  { period: '実務④（安全と環境・法令）', title: '安全衛生と環境・関連法令・維持管理', goal: '掘削・足場・建機の安全、産廃・騒音振動、関連法令、インフラ点検まで広げる', groupIds: ['P', 'Q'] },
 ]
 
 export function RoadmapPage() {

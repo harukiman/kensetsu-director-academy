@@ -24,7 +24,7 @@ const docs: SearchDoc[] = [
       id: c.id,
       title: t.term,
       subtitle: t.definition,
-      body: `${t.reading ?? ''} ${t.definition}`,
+      body: t.definition,
     })),
   ),
 ]

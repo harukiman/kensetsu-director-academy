@@ -14,6 +14,14 @@ export interface QuizResult {
   at: string
 }
 
+/** 演習（模擬試験）の分野別成績 */
+export interface ExamStat {
+  bestPct: number
+  lastPct: number
+  attempts: number
+  at: string
+}
+
 export interface ProgressState {
   /** 読了した章 ID */
   readChapters: string[]
@@ -21,6 +29,8 @@ export interface ProgressState {
   quizResults: Record<string, QuizResult>
   /** フラッシュカード ID -> 習熟度（0:未, 1:あいまい, 2:覚えた） */
   flashcards: Record<string, 0 | 1 | 2>
+  /** 演習の分野（category）-> 成績 */
+  examStats: Record<string, ExamStat>
   /** 学習した日付（YYYY-MM-DD）の配列。連続日数算出に使う */
   studyDays: string[]
 }
@@ -29,6 +39,7 @@ const empty: ProgressState = {
   readChapters: [],
   quizResults: {},
   flashcards: {},
+  examStats: {},
   studyDays: [],
 }
 

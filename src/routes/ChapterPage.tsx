@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { chapterById, neighbors } from '../content'
 import { groupById } from '../content/groups'
+import { examCategoryForGroup } from '../content/exam'
 import { ChapterBody } from '../components/ChapterBody'
 import { ReadingProgress } from '../components/ReadingProgress'
 import { ChapterToc } from '../components/ChapterToc'
@@ -21,6 +22,7 @@ export function ChapterPage() {
 
   if (!chapter) return <NotFoundPage />
   const group = groupById(chapter.groupId)
+  const examCat = examCategoryForGroup(chapter.groupId)
   const { prev, next } = neighbors(id)
   const read = isRead(id)
 
@@ -42,6 +44,20 @@ export function ChapterPage() {
           {read && <span className="text-emerald-600 dark:text-emerald-400">✔ 読了済み</span>}
         </div>
       </header>
+
+      {chapter.keyPoints && chapter.keyPoints.length > 0 && (
+        <section className="mb-6 rounded-xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-900/50 dark:bg-brand-900/20">
+          <h2 className="mb-2 text-sm font-bold text-brand-800 dark:text-brand-200">📌 この章のポイント</h2>
+          <ul className="space-y-1.5">
+            {chapter.keyPoints.map((p, i) => (
+              <li key={i} className="flex gap-2 text-sm text-slate-700 dark:text-slate-200">
+                <span className="shrink-0 text-brand-500">•</span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {toc.length >= 3 && <ChapterToc items={toc} />}
 
@@ -78,6 +94,11 @@ export function ChapterPage() {
         {chapter.quiz.length > 0 && (
           <Link to={`/quiz/${id}`} className="rounded-lg border border-brand-500 px-4 py-2 text-sm font-bold text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20">
             この章のクイズに挑戦 →
+          </Link>
+        )}
+        {examCat && (
+          <Link to={`/exam?cat=${encodeURIComponent(examCat)}`} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-bold text-slate-600 dark:border-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+            関連演習（{examCat}）→
           </Link>
         )}
       </section>

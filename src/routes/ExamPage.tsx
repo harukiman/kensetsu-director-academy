@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { EXAM_QUESTIONS, EXAM_CATEGORIES, type ExamQuestion } from '../content/exam'
+import { useProgress } from '../hooks/ProgressContext'
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -11,7 +13,12 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export function ExamPage() {
-  const [cat, setCat] = useState<string>('all')
+  const { recordExam } = useProgress()
+  const [params] = useSearchParams()
+  const presetCat = params.get('cat')
+  const [cat, setCat] = useState<string>(
+    presetCat && EXAM_CATEGORIES.includes(presetCat) ? presetCat : 'all',
+  )
   const [count, setCount] = useState<number>(10)
   const [deck, setDeck] = useState<ExamQuestion[] | null>(null)
   const [idx, setIdx] = useState(0)
@@ -145,9 +152,20 @@ export function ExamPage() {
     setSelected(i)
   }
   const next = () => {
-    setPicks((p) => [...p, selected ?? -1])
-    if (isLast) setDone(true)
-    else {
+    const finalPicks = [...picks, selected ?? -1]
+    setPicks(finalPicks)
+    if (isLast) {
+      // 分野別に正答を集計して記録
+      const per: Record<string, { correct: number; total: number }> = {}
+      deck.forEach((qq, i) => {
+        const c = per[qq.category] ?? { correct: 0, total: 0 }
+        c.total++
+        if (finalPicks[i] === qq.answerIndex) c.correct++
+        per[qq.category] = c
+      })
+      recordExam(per)
+      setDone(true)
+    } else {
       setIdx(idx + 1)
       setSelected(null)
     }

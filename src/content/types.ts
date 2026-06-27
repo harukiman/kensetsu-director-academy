@@ -45,6 +45,8 @@ export interface Chapter {
   title: string
   /** 一覧・検索で使う 1〜2 文の要約 */
   summary: string
+  /** この章のポイント（冒頭に表示する 3〜5 個の要点） */
+  keyPoints?: string[]
   /** 推定学習時間（分） */
   estMinutes: number
   /**

@@ -90,6 +90,34 @@ export function DashboardPage() {
         )}
       </section>
 
+      {/* 演習の分野別成績 */}
+      <section>
+        <h2 className="mb-3 text-lg font-bold">演習・模擬試験の分野別成績</h2>
+        {Object.keys(state.examStats).length === 0 ? (
+          <p className="text-sm text-slate-400">
+            まだ演習を受けていません。<Link to="/exam" className="text-brand-500 hover:underline">演習・模擬試験に挑戦する →</Link>
+          </p>
+        ) : (
+          <div className="table-wrap">
+            <table className="w-full text-sm">
+              <thead>
+                <tr><th className="px-3 py-2 text-left">分野</th><th className="px-3 py-2">ベスト</th><th className="px-3 py-2">直近</th><th className="px-3 py-2">挑戦</th></tr>
+              </thead>
+              <tbody>
+                {Object.entries(state.examStats).map(([cat, s]) => (
+                  <tr key={cat} className="border-t border-slate-100 dark:border-slate-700">
+                    <td className="px-3 py-2">{cat}</td>
+                    <td className="px-3 py-2 text-center font-bold text-brand-600 dark:text-brand-400">{s.bestPct}%</td>
+                    <td className="px-3 py-2 text-center">{s.lastPct}%</td>
+                    <td className="px-3 py-2 text-center text-xs text-slate-400">{s.attempts} 回</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
       <section className="no-print border-t border-slate-200 dark:border-slate-700 pt-6">
         <button
           onClick={() => { if (confirm('学習記録（進捗・スコア・カード）をすべて消去します。よろしいですか？')) resetAll() }}

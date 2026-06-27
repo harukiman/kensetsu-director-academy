@@ -20,6 +20,7 @@ interface ProgressContextValue {
   markRead: (chapterId: string) => void
   isRead: (chapterId: string) => boolean
   recordQuiz: (chapterId: string, result: QuizResult) => void
+  recordExam: (perCategory: Record<string, { correct: number; total: number }>) => void
   setFlashcard: (cardId: string, level: 0 | 1 | 2) => void
   resetAll: () => void
 }
@@ -57,6 +58,28 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     )
   }, [])
 
+  const recordExam = useCallback(
+    (perCategory: Record<string, { correct: number; total: number }>) => {
+      setState((prev) => {
+        const examStats = { ...prev.examStats }
+        const now = new Date().toISOString()
+        for (const [cat, { correct, total }] of Object.entries(perCategory)) {
+          if (total === 0) continue
+          const pct = Math.round((correct / total) * 100)
+          const cur = examStats[cat]
+          examStats[cat] = {
+            lastPct: pct,
+            bestPct: Math.max(pct, cur?.bestPct ?? 0),
+            attempts: (cur?.attempts ?? 0) + 1,
+            at: now,
+          }
+        }
+        return touchStudyDay({ ...prev, examStats })
+      })
+    },
+    [],
+  )
+
   const setFlashcard = useCallback((cardId: string, level: 0 | 1 | 2) => {
     setState((prev) =>
       touchStudyDay({
@@ -71,13 +94,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       readChapters: [],
       quizResults: {},
       flashcards: {},
+      examStats: {},
       studyDays: [],
     })
   }, [])
 
   const value = useMemo(
-    () => ({ state, markRead, isRead, recordQuiz, setFlashcard, resetAll }),
-    [state, markRead, isRead, recordQuiz, setFlashcard, resetAll],
+    () => ({ state, markRead, isRead, recordQuiz, recordExam, setFlashcard, resetAll }),
+    [state, markRead, isRead, recordQuiz, recordExam, setFlashcard, resetAll],
   )
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

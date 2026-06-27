@@ -32,9 +32,11 @@ body,
 }
 .article h2 {
   @apply mt-10 mb-4 text-xl sm:text-2xl font-bold border-l-4 border-brand-500 pl-3;
+  scroll-margin-top: 5rem; /* 目次ジャンプ時に sticky ヘッダーへ潜らないように */
 }
 .article h3 {
   @apply mt-8 mb-3 text-lg sm:text-xl font-bold text-brand-700 dark:text-brand-300;
+  scroll-margin-top: 5rem;
 }
 .article h4 {
   @apply mt-6 mb-2 text-base font-bold;

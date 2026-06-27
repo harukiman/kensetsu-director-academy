@@ -24,6 +24,34 @@ export function renderMarkdown(md: string): string {
   ).replace(/<\/table>/g, '</table></div>')
 }
 
+/** 本文の `## 見出し` を抽出して目次データを作る（id はレンダリング側と一致させる） */
+export interface TocItem {
+  text: string
+  id: string
+}
+export function extractToc(body: string): TocItem[] {
+  const out: TocItem[] = []
+  let i = 0
+  for (const line of body.split('\n')) {
+    const m = line.match(/^##\s+(.+)$/) // `###` は \s 不一致で除外される
+    if (m) {
+      out.push({ text: m[1].trim(), id: `sec-${i}` })
+      i++
+    }
+  }
+  return out
+}
+
+/** レンダリング済み HTML の `<h2>` に通し番号 id を付与（目次ジャンプ用） */
+export function injectHeadingIds(
+  html: string,
+  start: number,
+): { html: string; count: number } {
+  let n = start
+  const out = html.replace(/<h2>/g, () => `<h2 id="sec-${n++}">`)
+  return { html: out, count: n - start }
+}
+
 /** 本文を「Markdown 断片」と「図キー」に分割する。 */
 export type BodySegment =
   | { type: 'md'; content: string }

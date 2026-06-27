@@ -1,8 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { chapterById, neighbors } from '../content'
 import { groupById } from '../content/groups'
 import { ChapterBody } from '../components/ChapterBody'
+import { ReadingProgress } from '../components/ReadingProgress'
+import { ChapterToc } from '../components/ChapterToc'
+import { extractToc } from '../lib/markdown'
 import { useProgress } from '../hooks/ProgressContext'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -10,6 +13,7 @@ export function ChapterPage() {
   const { id = '' } = useParams()
   const chapter = chapterById(id)
   const { isRead, markRead } = useProgress()
+  const toc = useMemo(() => (chapter ? extractToc(chapter.body) : []), [chapter])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -22,6 +26,7 @@ export function ChapterPage() {
 
   return (
     <article className="mx-auto max-w-3xl">
+      <ReadingProgress />
       <nav className="text-xs text-slate-400">
         <Link to="/" className="hover:underline">ホーム</Link>
         {group && <> ／ {group.id}. {group.title}</>}
@@ -30,12 +35,15 @@ export function ChapterPage() {
       <header className="mt-2 mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{chapter.title}</h1>
         <p className="mt-3 text-slate-600 dark:text-slate-300">{chapter.summary}</p>
-        <div className="mt-3 flex items-center gap-3 text-xs text-slate-500">
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-500">
           <span>⏱ 約 {chapter.estMinutes} 分</span>
           <span>📝 クイズ {chapter.quiz.length} 問</span>
           <span>📖 用語 {chapter.terms.length}</span>
+          {read && <span className="text-emerald-600 dark:text-emerald-400">✔ 読了済み</span>}
         </div>
       </header>
+
+      {toc.length >= 3 && <ChapterToc items={toc} />}
 
       <ChapterBody body={chapter.body} />
 

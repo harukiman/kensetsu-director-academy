@@ -32,7 +32,9 @@ export function QuizPage() {
   const [idx, setIdx] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const [answers, setAnswers] = useState<boolean[]>([])
+  const [picks, setPicks] = useState<number[]>([]) // 各問で選んだ選択肢（復習用）
   const [done, setDone] = useState(false)
+  const reset = () => { setIdx(0); setSelected(null); setAnswers([]); setPicks([]); setDone(false) }
 
   if (questions.length === 0) {
     return (
@@ -55,6 +57,7 @@ export function QuizPage() {
     const correct = selected === q.answerIndex
     const newAnswers = [...answers, correct]
     setAnswers(newAnswers)
+    setPicks((p) => [...p, selected ?? -1])
     if (isLast) {
       const score = newAnswers.filter(Boolean).length
       if (id) {
@@ -70,24 +73,53 @@ export function QuizPage() {
   if (done) {
     const score = answers.filter(Boolean).length
     const pct = Math.round((score / questions.length) * 100)
+    const wrong = questions
+      .map((qq, i) => ({ qq, picked: picks[i], i }))
+      .filter((x) => x.picked !== x.qq.answerIndex)
     return (
-      <div className="mx-auto max-w-2xl text-center">
-        <h1 className="text-2xl font-bold">{title}：結果</h1>
-        <div className="my-8">
-          <div className="text-5xl font-bold text-brand-600 dark:text-brand-400">{pct}%</div>
-          <p className="mt-2 text-slate-500">{questions.length} 問中 {score} 問正解</p>
+      <div className="mx-auto max-w-2xl">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">{title}：結果</h1>
+          <div className="my-6">
+            <div className="text-5xl font-bold text-brand-600 dark:text-brand-400">{pct}%</div>
+            <p className="mt-2 text-slate-500">{questions.length} 問中 {score} 問正解</p>
+          </div>
+          <div className="flex justify-center gap-3">
+            <button onClick={reset} className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700">
+              もう一度
+            </button>
+            <Link to="/dashboard" className="rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-2 text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-800">
+              ダッシュボードへ
+            </Link>
+          </div>
         </div>
-        <div className="flex justify-center gap-3">
-          <button
-            onClick={() => { setIdx(0); setSelected(null); setAnswers([]); setDone(false) }}
-            className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700"
-          >
-            もう一度
-          </button>
-          <Link to="/dashboard" className="rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-2 text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-800">
-            ダッシュボードへ
-          </Link>
-        </div>
+
+        {wrong.length > 0 ? (
+          <section className="mt-10">
+            <h2 className="mb-3 text-lg font-bold">間違えた問題の復習（{wrong.length} 問）</h2>
+            <div className="space-y-4">
+              {wrong.map(({ qq, picked, i }) => (
+                <div key={i} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/40 p-4">
+                  <p className="font-bold">{qq.question}</p>
+                  <p className="mt-2 text-sm text-rose-600 dark:text-rose-400">
+                    あなたの回答：{picked >= 0 ? qq.choices[picked] : '（無回答）'}
+                  </p>
+                  <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">
+                    正解：{qq.choices[qq.answerIndex]}
+                  </p>
+                  <p className="mt-2 rounded-lg bg-slate-100 dark:bg-slate-800 p-3 text-sm text-slate-600 dark:text-slate-300">
+                    {qq.explanation}
+                  </p>
+                  <Link to={`/chapter/${qq.chapterId}`} className="mt-2 inline-block text-xs text-brand-500 hover:underline">
+                    {qq.chapterTitle} を復習する →
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <p className="mt-8 text-center text-emerald-600 dark:text-emerald-400">全問正解！すばらしい 🎉</p>
+        )}
       </div>
     )
   }

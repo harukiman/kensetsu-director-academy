@@ -13,12 +13,13 @@ import { NotFoundPage } from './NotFoundPage'
 export function ChapterPage() {
   const { id = '' } = useParams()
   const chapter = chapterById(id)
-  const { isRead, markRead } = useProgress()
+  const { isRead, markRead, setLastChapter } = useProgress()
   const toc = useMemo(() => (chapter ? extractToc(chapter.body) : []), [chapter])
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [id])
+    if (chapterById(id)) setLastChapter(id)
+  }, [id, setLastChapter])
 
   if (!chapter) return <NotFoundPage />
   const group = groupById(chapter.groupId)

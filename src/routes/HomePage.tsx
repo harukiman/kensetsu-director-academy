@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import {
   GROUPS,
   chaptersOfGroup,
+  chapterById,
   totalChapters,
   totalQuestions,
   totalTerms,
@@ -13,6 +14,7 @@ export function HomePage() {
   const { state } = useProgress()
   const readCount = state.readChapters.length
   const pct = totalChapters ? Math.round((readCount / totalChapters) * 100) : 0
+  const resume = state.lastChapter ? chapterById(state.lastChapter) : undefined
 
   return (
     <div className="space-y-8">
@@ -35,6 +37,21 @@ export function HomePage() {
           </Link>
         </div>
       </section>
+
+      {/* 続きから再開 */}
+      {resume && (
+        <Link
+          to={`/chapter/${resume.id}`}
+          className="flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4 transition-colors hover:bg-brand-100 dark:border-brand-900/50 dark:bg-brand-900/20 dark:hover:bg-brand-900/30"
+        >
+          <span className="text-2xl">▶️</span>
+          <span className="min-w-0">
+            <span className="block text-xs text-brand-700 dark:text-brand-300">前回の続きから再開</span>
+            <span className="block truncate font-bold">{resume.title}</span>
+          </span>
+          <span className="ml-auto shrink-0 text-brand-500">→</span>
+        </Link>
+      )}
 
       {/* 統計 */}
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">

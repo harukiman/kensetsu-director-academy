@@ -31,6 +31,8 @@ export interface ProgressState {
   flashcards: Record<string, 0 | 1 | 2>
   /** 演習の分野（category）-> 成績 */
   examStats: Record<string, ExamStat>
+  /** 最後に開いた章 ID（「続きから再開」用） */
+  lastChapter?: string
   /** 学習した日付（YYYY-MM-DD）の配列。連続日数算出に使う */
   studyDays: string[]
 }

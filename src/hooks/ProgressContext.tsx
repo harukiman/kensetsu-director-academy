@@ -22,6 +22,7 @@ interface ProgressContextValue {
   recordQuiz: (chapterId: string, result: QuizResult) => void
   recordExam: (perCategory: Record<string, { correct: number; total: number }>) => void
   setFlashcard: (cardId: string, level: 0 | 1 | 2) => void
+  setLastChapter: (chapterId: string) => void
   resetAll: () => void
 }
 
@@ -89,6 +90,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     )
   }, [])
 
+  const setLastChapter = useCallback((chapterId: string) => {
+    setState((prev) => (prev.lastChapter === chapterId ? prev : { ...prev, lastChapter: chapterId }))
+  }, [])
+
   const resetAll = useCallback(() => {
     setState({
       readChapters: [],
@@ -100,8 +105,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ state, markRead, isRead, recordQuiz, recordExam, setFlashcard, resetAll }),
-    [state, markRead, isRead, recordQuiz, recordExam, setFlashcard, resetAll],
+    () => ({ state, markRead, isRead, recordQuiz, recordExam, setFlashcard, setLastChapter, resetAll }),
+    [state, markRead, isRead, recordQuiz, recordExam, setFlashcard, setLastChapter, resetAll],
   )
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

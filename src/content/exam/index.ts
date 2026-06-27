@@ -3,6 +3,10 @@ import { examPart1 } from './part1'
 import { examPart2 } from './part2'
 import { examPart3 } from './part3'
 import { examPart4 } from './part4'
+import { examPart5 } from './part5'
+import { examPart6 } from './part6'
+import { examPart7 } from './part7'
+import { examPart8 } from './part8'
 
 export type { ExamQuestion }
 
@@ -11,6 +15,10 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
   ...examPart2,
   ...examPart3,
   ...examPart4,
+  ...examPart5,
+  ...examPart6,
+  ...examPart7,
+  ...examPart8,
 ]
 
 /** 出題分野（設問が存在する category を出現順で） */

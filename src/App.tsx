@@ -3,6 +3,7 @@ import { Layout } from './components/Layout'
 import { HomePage } from './routes/HomePage'
 import { ChapterPage } from './routes/ChapterPage'
 import { QuizPage } from './routes/QuizPage'
+import { ExamPage } from './routes/ExamPage'
 import { GlossaryPage } from './routes/GlossaryPage'
 import { FlashcardsPage } from './routes/FlashcardsPage'
 import { DashboardPage } from './routes/DashboardPage'
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/chapter/:id" element={<ChapterPage />} />
         <Route path="/quiz" element={<QuizPage />} />
         <Route path="/quiz/:id" element={<QuizPage />} />
+        <Route path="/exam" element={<ExamPage />} />
         <Route path="/glossary" element={<GlossaryPage />} />
         <Route path="/flashcards" element={<FlashcardsPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />

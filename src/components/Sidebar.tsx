@@ -7,6 +7,7 @@ const TOOLS = [
   { to: '/dashboard', label: 'ダッシュボード', icon: '📊' },
   { to: '/roadmap', label: '学習ロードマップ', icon: '🗺️' },
   { to: '/quiz', label: 'クイズ・確認テスト', icon: '✅' },
+  { to: '/exam', label: '演習・模擬試験', icon: '📝' },
   { to: '/flashcards', label: 'フラッシュカード', icon: '🃏' },
   { to: '/glossary', label: '用語集・略語', icon: '📖' },
   { to: '/checklist', label: '現場チェックリスト', icon: '📋' },

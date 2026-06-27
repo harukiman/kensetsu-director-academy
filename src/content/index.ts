@@ -17,6 +17,7 @@ import { chaptersN } from './chapters/groupN'
 import { chaptersO } from './chapters/groupO'
 import { chaptersP } from './chapters/groupP'
 import { chaptersQ } from './chapters/groupQ'
+import { chaptersR } from './chapters/groupR'
 import { EXTRA_TERMS } from './glossaryExtra'
 
 /** 全章（章立て順）。表示・前後ナビは GROUPS の並びに対応させる。 */
@@ -37,6 +38,7 @@ export const CHAPTERS: Chapter[] = [
   ...chaptersO,
   ...chaptersP,
   ...chaptersQ,
+  ...chaptersR,
   ...chaptersG,
 ]
 
